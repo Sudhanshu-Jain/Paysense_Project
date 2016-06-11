@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/title"
+        android:textSize="25sp"
+        android:text="bsgkasegbkgbekebfg"
+        android:layout_marginTop="30dp"
+        android:clickable="true"/>
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/image"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="400dp"
+        android:id="@+id/relativeLayout">
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idNumber"
+        android:text="2345"
+        android:layout_above="@+id/loginName"
+        android:layout_toRightOf="@+id/image"
+        android:layout_toEndOf="@+id/image" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="navlkdnsflea"
+        android:id="@+id/loginName"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_toRightOf="@+id/image"
+        android:layout_toEndOf="@+id/image" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LoginName:"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_toLeftOf="@+id/relativeLayout"
+        android:layout_toStartOf="@+id/relativeLayout"
+        android:id="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID: "
+        android:id="@+id/Id"
+        android:layout_above="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Author: "-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginTop="350dp"-->
+        <!--android:layout_marginRight="70dp"-->
+        <!--android:textSize="17sp"-->
+        <!--android:id="@+id/author"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="ngbsjagk"-->
+        <!--android:layout_alignBottom="@+id/author"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:textSize="17sp"-->
+        <!--android:id="@+id/authorfilled"/>-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Date posted"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_marginLeft="30dp"-->
+        <!--android:layout_marginTop="350dp"-->
+        <!--android:textSize="17sp" />-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="130dp"-->
+        <!--android:textSize="17sp"-->
+        <!--android:text="364749283"-->
+        <!--android:layout_marginTop="350dp"-->
+        <!--android:id="@+id/datefilled"/>-->
+
+
+</RelativeLayout>

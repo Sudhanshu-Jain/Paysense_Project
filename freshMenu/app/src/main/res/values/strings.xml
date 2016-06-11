@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">freshMenu</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="maintitle">Mains</string>
+    <string name="startertitle">Starters</string>
+    <string name="deserttitle">Deserts</string>
+</resources>
