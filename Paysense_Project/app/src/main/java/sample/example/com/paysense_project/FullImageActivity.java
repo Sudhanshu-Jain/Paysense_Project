@@ -5,16 +5,29 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 public class FullImageActivity extends AppCompatActivity {
+
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_full_image);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_full_image);
         hideSystemUI();
+        url = getIntent().getStringExtra("imageUrl");
+
+        ImageView background = (ImageView)findViewById(R.id.background);
+        Picasso.with(FullImageActivity.this).load(url).into(background);
+
+
+
 
     }
 
@@ -30,4 +43,7 @@ public class FullImageActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                         | View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
+
+
+
 }
