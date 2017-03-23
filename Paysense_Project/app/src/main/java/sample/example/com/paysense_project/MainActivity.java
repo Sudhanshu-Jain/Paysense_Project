@@ -14,6 +14,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -44,7 +46,16 @@ public class MainActivity extends AppCompatActivity {
     private GridLayoutManager layout;
     RecyclerView grid_view;
     ImageListAdapter rdp;
+    private ProgressBar spinner;
+    SearchImages searchImages;
 
+
+    @Override
+    public void onBackPressed() {
+        if (searchImages != null)
+            searchImages.cancel(true);
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         grid_view.setHasFixedSize(true);
         layout = new GridLayoutManager(MainActivity.this, 2);
         grid_view.setLayoutManager(layout);
-
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
         search = (EditText)findViewById(R.id.search);
         cross = (ImageView)findViewById(R.id.cross);
         button = (Button)findViewById(R.id.button1);
-
+        spinner.setVisibility(View.GONE);
         cross.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -72,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         search.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                search.setCursorVisible(true);
+
 
 
                 return false;
@@ -86,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!hasFocus || search.getText().toString().length() == 0) {
                     search.setHint("Search your images here");
                     cross.setVisibility(View.INVISIBLE);
-                    search.setCursorVisible(false);
+
                 } else if (hasFocus) {
-                    search.setCursorVisible(true);
+
                     search.setHint("");
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
@@ -123,7 +134,10 @@ public class MainActivity extends AppCompatActivity {
 
                 String s = search.getText().toString();
                 url = BASE_URL+"?key="+API_KEY+"&q="+s+"&image_type=photo";
-                new SearchImages().execute(url);
+                hideKeyboard(search);
+                arrayList.clear();
+                searchImages = new SearchImages();
+                searchImages.execute(url);
 
             }
         });
@@ -142,36 +156,39 @@ public class MainActivity extends AppCompatActivity {
 
             HttpConnectionParams
                     .setConnectionTimeout(httpParameters, 30000);
-
-            HttpClient client = new DefaultHttpClient(httpParameters);
-
-            HttpGet httppost = new HttpGet(strings[0]);
             try {
-                response = client.execute(httppost);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if(response!=null){
-                HttpEntity ent = response.getEntity();
+                HttpClient client = new DefaultHttpClient(httpParameters);
+
+                HttpGet httppost = new HttpGet(strings[0]);
                 try {
-                    String responseString = EntityUtils.toString(ent, "UTF-8");
-                    JSONObject resp = new JSONObject(responseString);
-                    JSONArray hits = resp.getJSONArray("hits");
-                    for (int i=0;i<hits.length();i++){
-                        JSONObject hit1 = hits.getJSONObject(i);
-                        String imageUrl = hit1.getString("userImageURL");
-                        arrayList.add(imageUrl);
-                    }
-
-
+                    response = client.execute(httppost);
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+                if (response != null) {
+                    HttpEntity ent = response.getEntity();
+                    try {
+                        String responseString = EntityUtils.toString(ent, "UTF-8");
+                        JSONObject resp = new JSONObject(responseString);
+                        JSONArray hits = resp.getJSONArray("hits");
+                        for (int i = 0; i < hits.length(); i++) {
+                            JSONObject hit1 = hits.getJSONObject(i);
+                            String imageUrl = hit1.getString("userImageURL");
+                            arrayList.add(imageUrl);
+                        }
 
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }catch (Exception e){
+                e.getMessage();
             }
 
             return null;
@@ -179,12 +196,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            spinner.setVisibility(View.VISIBLE);
+        }
 
-            rdp = new ImageListAdapter(MainActivity.this,arrayList);
-            grid_view.setAdapter(rdp);
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            spinner.setVisibility(View.GONE);
+            if(!arrayList.isEmpty()) {
+                rdp = new ImageListAdapter(MainActivity.this, arrayList);
+                grid_view.setAdapter(rdp);
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Invalid arguement for search",Toast.LENGTH_SHORT).show();
+            }
 
             super.onPostExecute(aVoid);
         }
+    }
+
+    public void hideKeyboard(View view){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
